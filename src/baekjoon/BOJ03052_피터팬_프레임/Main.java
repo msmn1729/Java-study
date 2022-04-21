@@ -1,20 +1,20 @@
-package baekjoon;
+package baekjoon.BOJ03052_피터팬_프레임;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class BOJ03052_피터팬_프레임 {
+public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String word = br.readLine();
 
         char[][] result = new char[5][5 + 4 * word.length()];
         char[][] frame = {"..#..".toCharArray(),
-                          ".#.#.".toCharArray(),
-                          "#...#".toCharArray(),
-                          ".#.#.".toCharArray(),
-                          "..#..".toCharArray()};
+                ".#.#.".toCharArray(),
+                "#...#".toCharArray(),
+                ".#.#.".toCharArray(),
+                "..#..".toCharArray()};
 
         if (word.length() == 0) {
             for (int i = 0; i < 5; i++) {
