@@ -8,15 +8,24 @@ public class Tag {
 
     public Tag() {
         for (int i = 1; i <= 9; i++) {
-            tagQueue.add(i);
+            setTag(i);
         }
     }
 
     public int getTag() {
+        if(tagQueue.isEmpty()) return -1;
         return tagQueue.poll();
     }
 
-    public boolean existTag() {
-        return !tagQueue.isEmpty();
+    public void setTag(int tag) {
+        tagQueue.add(tag);
+    }
+
+    public boolean isEmpty() {
+        return tagQueue.isEmpty();
+    }
+
+    public boolean isAvailableTag(int tag) {
+        return !tagQueue.contains(tag);
     }
 }

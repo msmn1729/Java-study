@@ -9,7 +9,7 @@ public class Main {
     private static int createTaskFailCnt = 0;
     private static Map<Integer, Integer> executeTaskFailMap = new HashMap<>(); // (key, value): (태그번호, 실패횟수)
     private static List<Integer> executeTaskFailList;
-    private static Tag tag = new Tag();
+    private static Tag tag = new Tag(); // 1~9 태그 인스턴스 생성
 
     public static void main(String[] args) throws IOException {
         commandProcessing();
@@ -35,15 +35,9 @@ public class Main {
 
     // create: task 생성
     private static void createTask() {
-//        for (int i = 1; i <= 9; i++) {
-//            if (tag[i] == 1) continue;
-//            tag[i] = 1; // 태그번호를 등록(1)
-//            return;
-//        }
-//        createTaskFailCnt++;
-
         Task task = new Task();
-        task.setTag(tag.getTag());
+        if (tag.isEmpty()) createTaskFailCnt++;
+        else task.setTag(tag.getTag());
     }
 
     // excute [tag]: 특정 태그의 task를 처리
@@ -58,14 +52,11 @@ public class Main {
             return; // 메서드 종료
         }
 
-//        // 요청들어온 태그가 미등록(0)인 경우 수행 실패 처리
-
-//        if (tag[tagNum] == 0) {
-//            setExecuteTaskFailMap(tagNum);
-//        } else {
-//            // 태스크 수행 성공 -> 태그 번호 미등록(0)으로 업데이트
-//            tag[tagNum] = 0;
-//        }
+        if (tag.isAvailableTag(tagNum)) {
+            tag.setTag(tagNum);
+        } else {
+            setExecuteTaskFailMap(tagNum);
+        }
     }
 
     // 수행 실패한 태그번호를 실패 횟수 카운팅해서 맵에 저장하는 메서드
@@ -79,7 +70,7 @@ public class Main {
 
     private static void printAvailableTagList() {
         System.out.print("사용가능한 TAG:");
-        if (tag.existTag()) {
+        while (!tag.isEmpty()) {
             System.out.print(" " + tag.getTag());
         }
     }
@@ -87,7 +78,7 @@ public class Main {
     private static void printCreateTaskFailCnt() {
         System.out.println("\nTASK 생성 실패: " + createTaskFailCnt);
     }
-    
+
     private static void printExecuteTaskFailTagInfo() {
         // 정렬을 위해 맵에 있는 키값을 리스트로 변환
         executeTaskFailList = new ArrayList<>(executeTaskFailMap.keySet());
