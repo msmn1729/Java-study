@@ -14,21 +14,15 @@ public class AccountDB {
     }
 
     public Account findByAccount(Account account) throws RuntimeException {
-        for (int i = 0; i < accounts.size(); i++) {
-            if (account.equals(accounts.get(i))) {
-                return account;
-            }
+        if (accounts.contains(account)) {
+            return account;
         }
+
         throw new RuntimeException(account + " 는 DB에 존재하지 않는 계정입니다.");
     }
 
     public boolean isExist(Account account) {
-        for (int i = 0; i < accounts.size(); i++) {
-            if (account.equals(accounts.get(i))) {
-                return true;
-            }
-        }
-        return false;
+        return accounts.contains(account);
     }
 
     @Override
