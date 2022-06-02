@@ -18,25 +18,26 @@ public class Document {
     }
 
     public void addPermission(Account account) throws RuntimeException {
-        if (new AccountDB().isExist(account)) {
-            boolean enoughSizeCheck = (permissionAccounts[permissionAccounts.length - 1] == null);
-
-            // 권한 공간이 부족한 경우 2배 늘림
-            if (!enoughSizeCheck) {
-                permissionAccounts = increaseArraySizeDouble(permissionAccounts);
-            }
-
-            // 퍼미션 등록
-            for (int i = 0; i < permissionAccounts.length; i++) {
-                if (permissionAccounts[i] != null) {
-                    continue;
-                }
-                permissionAccounts[i] = account;
-                System.out.println(account + " 계정에 문서 읽기 권한이 부여되었습니다.");
-                return;
-            }
+        if (!new AccountDB().isExist(account)) {
+            throw new RuntimeException(account + " 는 DB에 등록되지 않은 계정이므로 권한을 추가할 수 없습니다.");
         }
-        throw new RuntimeException(account + " 는 DB에 등록되지 않은 계정이므로 권한을 추가할 수 없습니다.");
+
+        boolean enoughSizeCheck = (permissionAccounts[permissionAccounts.length - 1] == null);
+
+        // 권한 공간이 부족한 경우 2배 늘림
+        if (!enoughSizeCheck) {
+            permissionAccounts = increaseArraySizeDouble(permissionAccounts);
+        }
+
+        // 퍼미션 등록
+        for (int i = 0; i < permissionAccounts.length; i++) {
+            if (permissionAccounts[i] != null) {
+                continue;
+            }
+            permissionAccounts[i] = account;
+            System.out.println(account + " 계정에 문서 읽기 권한이 부여되었습니다.");
+            return;
+        }
     }
 
     public Account[] increaseArraySizeDouble(Account[] permissionAccounts) {
