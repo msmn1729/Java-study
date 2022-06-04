@@ -14,6 +14,7 @@ public class Main {
     }
 
     public static void testDeposit() {
+        activity.deposit(account1, -30000);
         activity.deposit(account1, 30000);
         activity.recordList();
     }

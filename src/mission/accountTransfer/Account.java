@@ -11,10 +11,6 @@ public class Account {
         this.balance = balance;
     }
 
-    public Person getPerson() {
-        return person;
-    }
-
     public String getId() {
         return id;
     }
