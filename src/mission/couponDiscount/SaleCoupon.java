@@ -1,9 +1,19 @@
 package mission.couponDiscount;
 
 public class SaleCoupon implements Coupon {
+
+    @Override
+    public String getName() {
+        return "SaleCoupon";
+    }
+
     @Override
     public boolean isAvailableApply(int price) {
-        return price >= 5000;
+        if (price < 5000) {
+            System.out.println("5,000원 미만인 상품에는 적용할 수 없습니다.");
+            return false;
+        }
+        return true;
     }
 
     @Override

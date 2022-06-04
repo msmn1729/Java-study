@@ -1,10 +1,8 @@
 package mission.couponDiscount;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 public interface Coupon {
-    boolean isAvailableApply(int price) throws ParseException;
+    String getName();
+    boolean isAvailableApply(int price);
 
     int priorityCheck();
 

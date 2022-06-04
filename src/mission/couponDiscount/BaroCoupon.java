@@ -3,8 +3,17 @@ package mission.couponDiscount;
 public class BaroCoupon implements Coupon {
 
     @Override
+    public String getName() {
+        return "BaroCoupon";
+    }
+
+    @Override
     public boolean isAvailableApply(int price) {
-        return price == 1000;
+        if (price < 1000) {
+            System.out.print("1,000원 미만 상품에는 적용할 수 없습니다.");
+            return false;
+        }
+        return true;
     }
 
     @Override
