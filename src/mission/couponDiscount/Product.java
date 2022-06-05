@@ -1,6 +1,7 @@
 package mission.couponDiscount;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 public class Product {
     private String name;
@@ -18,33 +19,23 @@ public class Product {
     }
 
     public void createBaroCoupon() {
-        for (int i = 0; i < coupons.length; i++) {
-            if (coupons[i] != null) {
-                continue;
-            }
-            coupons[i] = new BaroCoupon();
-            return;
-        }
-        createCouponFail();
+        createCoupon(new BaroCoupon());
     }
 
     public void createSaleCoupon() {
-        for (int i = 0; i < coupons.length; i++) {
-            if (coupons[i] != null) {
-                continue;
-            }
-            coupons[i] = new SaleCoupon();
-            return;
-        }
-        createCouponFail();
+        createCoupon(new SaleCoupon());
     }
 
     public void createDateCoupon(int year, int month, int day) {
+        createCoupon(new DateCoupon(LocalDate.of(year, month, day)));
+    }
+
+    public void createCoupon(Coupon coupon) {
         for (int i = 0; i < coupons.length; i++) {
             if (coupons[i] != null) {
                 continue;
             }
-            coupons[i] = new DateCoupon(LocalDate.of(year, month, day));
+            coupons[i] = coupon;
             return;
         }
         createCouponFail();
@@ -65,24 +56,73 @@ public class Product {
                 continue;
             }
             if (!coupons[i].isAvailableApply(price)) {
-                System.out.println(coupons[i].getName());
+                System.out.println(coupons[i].getClass().getSimpleName());
             }
         }
         System.out.println("--------------------------------");
     }
 
-    public void couponDiscountAppliedPrice() {
-        System.out.println("[쿠폰 할인 적용가]");
+    public void allCouponDiscountAppliedPrice() {
+        System.out.println("[전체 쿠폰 할인 적용]");
         for (int i = 0; i < coupons.length; i++) {
             if (coupons[i] == null) {
                 continue;
             }
             if (coupons[i].isAvailableApply(price)) {
                 int discountedPrice = price - coupons[i].discountPrice(price);
-                System.out.println(coupons[i].getName() + " 적용가: " + price + " - " + coupons[i].discountPrice(price) + " = " + discountedPrice);
+                System.out.println(coupons[i].getClass().getSimpleName() + " 적용가: " + price + " - " + coupons[i].discountPrice(price) + " = " + discountedPrice);
             }
         }
         System.out.println("--------------------------------");
+    }
+
+    public int couponDiscountAppliedPrice() {
+        System.out.println("[최종 쿠폰 적용가]");
+
+        for (Coupon coupon : couponPrioritySort()) {
+            if (coupon == null || !coupon.isAvailableApply(price)) {
+                continue;
+            }
+            int discountedPrice = price - coupon.discountPrice(price);
+            System.out.println(coupon.getClass().getSimpleName() + " 적용가: " + price + " - " + coupon.discountPrice(price) + " = " + discountedPrice);
+            price -= coupon.discountPrice(price);
+        }
+        return price;
+    }
+
+    public Coupon[] couponPrioritySort() {
+        int count = 0;
+
+        for (int i = 0; i < coupons.length; i++) {
+            if (coupons[i] == null) {
+                continue;
+            }
+            count++;
+        }
+
+        Coupon[] validCoupons = new Coupon[count];
+        for (int i = 0; i < coupons.length; i++) {
+            if (coupons[i] == null) {
+                continue;
+            }
+            validCoupons[--count] = coupons[i];
+        }
+        Arrays.sort(validCoupons);
+        return validCoupons;
+    }
+
+    public int couponPriorityDiscountAppliedPrice(int price, int priority) {
+        for (int i = 0; i < coupons.length; i++) {
+            if (coupons[i] == null || !coupons[i].isAvailableApply(price)) {
+                continue;
+            }
+            if (coupons[i].priorityCheck() == priority) {
+                int discountedPrice = price - coupons[i].discountPrice(price);
+                System.out.println(coupons[i].getClass().getSimpleName() + " 적용가: " + price + " - " + coupons[i].discountPrice(price) + " = " + discountedPrice);
+                price -= coupons[i].discountPrice(price);
+            }
+        }
+        return price;
     }
 
     public void printAllCoupon() {
@@ -91,7 +131,7 @@ public class Product {
             if (coupons[i] == null) {
                 continue;
             }
-            System.out.println("쿠폰명: " + coupons[i].getName() + ", 우선순위: " + coupons[i].priorityCheck());
+            System.out.println("쿠폰명: " + coupons[i].getClass().getSimpleName() + ", 우선순위: " + coupons[i].priorityCheck());
         }
         System.out.println("--------------------------------");
     }

@@ -1,11 +1,6 @@
 package mission.couponDiscount;
 
-public class BaroCoupon implements Coupon {
-
-    @Override
-    public String getName() {
-        return "BaroCoupon";
-    }
+public class BaroCoupon extends SortedCoupon {
 
     @Override
     public boolean isAvailableApply(int price) {

@@ -18,7 +18,8 @@ public class Main {
 //        testBaroCoupon();
 //        testSaleCoupon();
 //        testDateCoupon();
-        testAllCoupon();
+//        testAllCoupon();
+        testCouponDiscountAppliedPrice();
     }
 
     public static void testBaroCoupon() {
@@ -29,7 +30,7 @@ public class Main {
 
         product1.printAllCoupon();
         product1.notAvailableCoupon();
-        product1.couponDiscountAppliedPrice();
+        product1.allCouponDiscountAppliedPrice();
     }
 
     public static void testSaleCoupon() {
@@ -38,14 +39,14 @@ public class Main {
 
         product1.printAllCoupon();
         product1.notAvailableCoupon();
-        product1.couponDiscountAppliedPrice();
+        product1.allCouponDiscountAppliedPrice();
 
         product2.createSaleCoupon();
         product2.createSaleCoupon();
 
         product2.printAllCoupon();
         product2.notAvailableCoupon();
-        product2.couponDiscountAppliedPrice();
+        product2.allCouponDiscountAppliedPrice();
     }
 
     public static void testDateCoupon() {
@@ -54,18 +55,32 @@ public class Main {
 
         product2.printAllCoupon();
         product2.notAvailableCoupon();
-        product2.couponDiscountAppliedPrice();
+        product2.allCouponDiscountAppliedPrice();
     }
 
     public static void testAllCoupon() {
         product2.resetCoupon();
 
-        product2.createSaleCoupon();
-        product2.createDateCoupon(2022, 7, 7);
-        product2.createBaroCoupon();
+        product2.createSaleCoupon(); // 2순위
+        product2.createDateCoupon(2022, 7, 7); // 3순위
+        product2.createBaroCoupon(); // 1순위
 
         product2.printAllCoupon();
         product2.notAvailableCoupon();
-        product2.couponDiscountAppliedPrice();
+        product2.allCouponDiscountAppliedPrice();
+    }
+
+    public static void testCouponDiscountAppliedPrice() {
+        Product product3 = new Product("커피", 2000, 4);
+        product3.createBaroCoupon();
+        product3.createDateCoupon(2022, 6, 10);
+        product3.createDateCoupon(2022, 6, 10);
+
+        System.out.println(product3.couponDiscountAppliedPrice());
+
+//        SortedCoupon[] coupons = new SortedCoupon[3];
+//        coupons[2] = new BaroCoupon();
+//        Arrays.sort(coupons);
+//        System.out.println(Arrays.toString(coupons));
     }
 }

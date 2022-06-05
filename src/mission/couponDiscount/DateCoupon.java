@@ -2,16 +2,11 @@ package mission.couponDiscount;
 
 import java.time.LocalDate;
 
-public class DateCoupon implements Coupon {
+public class DateCoupon extends SortedCoupon {
     private LocalDate expiredDate;
 
     public DateCoupon(LocalDate expiredDate) {
         this.expiredDate = expiredDate;
-    }
-
-    @Override
-    public String getName() {
-        return "DateCoupon";
     }
 
     @Override
